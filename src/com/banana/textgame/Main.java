@@ -3,7 +3,7 @@ package com.banana.textgame;
 public class Main {
 
     /*
-     * Главный метод.
+     * Главный метод привет :)
      */
     public static void main(String[] args) {
         // вызывает метод start()
