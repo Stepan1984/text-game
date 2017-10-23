@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
 
     /*
-     * Главный метод привет :)
+     * Главный метод привет :) ;)
      */
     public static void main(String[] args) {
         // вызывает метод start()
