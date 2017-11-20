@@ -5,9 +5,13 @@ import java.util.Scanner;
 
 public class Main {
 
-    /*
-     * Главный метод
-     */
+
+
+    String[] доступныеЯзыки = {"Java", "Pithon", "Pascal", "C", "Kotlin"};
+    Scanner клавиатура = new Scanner(System.in);
+    User пользователь = new User();
+
+
     public static void main(String[] args) {
         // вызывает метод start()
         new Main().start();
@@ -39,13 +43,6 @@ public class Main {
 
     }
 
-    int ОбщийЗароботок = 0;
-    int hapiness = 3;
-    String[] доступныеЯзыки = {"Java", "Pithon", "Pascal", "C", "Kotlin"};
-    boolean[] изученныеЯзыки = {true, false, false, false, false};
-    Scanner клавиатура = new Scanner(System.in);
-    ArrayList<String> компании = new ArrayList<>();
-
     /*
      * Метод вызывается каждый игровый день.
      * Единственный параметр: dayNumber - номер текущего игрового дня.
@@ -53,13 +50,13 @@ public class Main {
     void onNewDay(int dayNumber) {
         System.out.println("День номер " + dayNumber + ".");
         String smiles = "";
-        for (int i = 1; i <= hapiness; i = i + 1) {
+        for (int i = 1; i <= пользователь.hapiness; i = i + 1) {
             smiles = smiles + "☻";
         }
         System.out.println("Ваше настроение: " + smiles + ".");
         System.out.println("Вы знаете языки:");
         printLearnedLanguages();
-        System.out.println("Компании, в каторых вы работаете:" + компании + ".");
+        System.out.println("Компании, в каторых вы работаете:" + пользователь.компании + ".");
 
 
         System.out.println("Что будем делать?");
@@ -70,14 +67,14 @@ public class Main {
                 String код = клавиатура.nextLine();
                 код = код.replace(" ", "");
                 int зароботок = код.length();
-                ОбщийЗароботок = ОбщийЗароботок + зароботок;
-                hapiness = hapiness - 1;
-                System.out.println("За день ты зароботал " + ОбщийЗароботок + "$.");
+                пользователь.ОбщийЗароботок = пользователь.ОбщийЗароботок + зароботок;
+                пользователь.hapiness = пользователь.hapiness - 1;
+                System.out.println("За день ты зароботал " + пользователь.ОбщийЗароботок + "$.");
 
                 break;
             case "скакалка":
                 System.out.println("Окей, вы попрыгали на скакалке");
-                hapiness = hapiness + 1;
+                пользователь.hapiness = пользователь.hapiness + 1;
                 break;
             case "изучить":
                 learnLanguage();
@@ -116,17 +113,17 @@ public class Main {
         String выбранныйЯзык = клавиатура.nextLine();
 
         for (int i = 0; i < доступныеЯзыки.length; i++) {
-            if (доступныеЯзыки[i] .equals(выбранныйЯзык) && изученныеЯзыки[i] == false
-            && hapiness > 0
-            && ОбщийЗароботок > 20)   {
-                изученныеЯзыки[i] = true;
-                hapiness -= 1;
-                ОбщийЗароботок -= 20;
-            } else if (hapiness == 0){
+            if (доступныеЯзыки[i] .equals(выбранныйЯзык) && пользователь.изученныеЯзыки[i] == false
+            && пользователь.hapiness > 0
+            && пользователь.ОбщийЗароботок > 20)   {
+                пользователь.изученныеЯзыки[i] = true;
+                пользователь.hapiness -= 1;
+                пользователь.ОбщийЗароботок -= 20;
+            } else if (пользователь.hapiness == 0){
                 System.out.println("Вам слишком грустно.");
-            } else if (ОбщийЗароботок < 20) {
+            } else if (пользователь.ОбщийЗароботок < 20) {
                 System.out.println("У вас не хватает денег");
-            }else if (изученныеЯзыки[i] == true){
+            }else if (пользователь.изученныеЯзыки[i] == true){
                 System.out.println("Вы уже знаете этот язык.");
             }
 
@@ -136,8 +133,8 @@ public class Main {
     }
 
     void printLearnedLanguages() {
-        for (int i = 0; i < изученныеЯзыки.length; i++) {
-            if (изученныеЯзыки[i] == true) {
+        for (int i = 0; i < пользователь.изученныеЯзыки.length; i++) {
+            if (пользователь.изученныеЯзыки[i] == true) {
                 System.out.println("*" + доступныеЯзыки[i]);
             }
         }
@@ -160,14 +157,14 @@ public class Main {
     }
 
     void скушатьПельмешки(int количествоПельмешек) {
-        ОбщийЗароботок=ОбщийЗароботок - 5 * количествоПельмешек;
-                hapiness=hapiness + 5 * количествоПельмешек;
+        пользователь.ОбщийЗароботок=пользователь.ОбщийЗароботок - 5 * количествоПельмешек;
+        пользователь.hapiness=пользователь.hapiness + 5 * количествоПельмешек;
     }
 
     int финальныеОчки(){
-        int очки = ОбщийЗароботок * 2 + hapiness * 3;
-        for (int i = 0; i < изученныеЯзыки.length; i++) {
-            if (изученныеЯзыки[i] == true) {
+        int очки = пользователь.ОбщийЗароботок * 2 + пользователь.hapiness * 3;
+        for (int i = 0; i < пользователь.изученныеЯзыки.length; i++) {
+            if (пользователь.изученныеЯзыки[i] == true) {
                 очки = очки + 5;
             }
         }
@@ -177,22 +174,22 @@ public class Main {
     void найтиРаботу() {
         System.out.println("В какой кампании будете работать?");
         String компания = клавиатура.nextLine();
-        компании.add(компания);
+        пользователь.компании.add(компания);
     }
     void увольнение() {
         System.out.println("Из какой компании хотите уволиться?");
         String компания = клавиатура.nextLine();
-        компании.remove(компания);
+        пользователь.компании.remove(компания);
         }
         void броситьКости(){
         int число = (int) (Math.random() * 6 + 1);
         System.out.println("Вам выпало число " + число);
         if ( число % 2 == 0 ) {
                 System.out.println("Вы выиграли деньги");
-                ОбщийЗароботок = ОбщийЗароботок + 2;
+            пользователь.ОбщийЗароботок = пользователь.ОбщийЗароботок + 2;
         }else {
                 System.out.println("Вы победитель по жизни");
-                hapiness = hapiness + 3;
+            пользователь.hapiness = пользователь.hapiness + 3;
             }
         }
 }
