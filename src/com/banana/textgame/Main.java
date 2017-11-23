@@ -1,6 +1,5 @@
 package com.banana.textgame;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -49,13 +48,10 @@ public class Main {
      */
     void onNewDay(int dayNumber) {
         System.out.println("День номер " + dayNumber + ".");
-        String smiles = "";
-        for (int i = 1; i <= пользователь.hapiness; i = i + 1) {
-            smiles = smiles + "☻";
-        }
-        System.out.println("Ваше настроение: " + smiles + ".");
+        пользователь.printMoney();
+        пользователь.printMood();
         System.out.println("Вы знаете языки:");
-        printLearnedLanguages();
+        пользователь.printLearnedLanguages();
         System.out.println("Компании, в каторых вы работаете:" + пользователь.компании + ".");
 
 
@@ -69,7 +65,6 @@ public class Main {
                 int зароботок = код.length();
                 пользователь.ОбщийЗароботок = пользователь.ОбщийЗароботок + зароботок;
                 пользователь.hapiness = пользователь.hapiness - 1;
-                System.out.println("За день ты зароботал " + пользователь.ОбщийЗароботок + "$.");
 
                 break;
             case "скакалка":
@@ -80,7 +75,7 @@ public class Main {
                 learnLanguage();
                 break;
             case ("пельмешки"):
-                скушатьПельмешки();
+                скушатьЕду(new Пельмешка());
              break;
             case "работа":
                  найтиРаботу();
@@ -90,6 +85,9 @@ public class Main {
                 break;
             case "кости":
                 броситьКости();
+                break;
+            case "ананас":
+                скушатьЕду(new Ананас());
                 break;
             default:
                 System.out.println("Ошибка");
@@ -132,22 +130,15 @@ public class Main {
 
     }
 
-    void printLearnedLanguages() {
-        for (int i = 0; i < пользователь.изученныеЯзыки.length; i++) {
-            if (пользователь.изученныеЯзыки[i] == true) {
-                System.out.println("*" + доступныеЯзыки[i]);
-            }
-        }
 
-    }
-    void скушатьПельмешки() {
+    void скушатьЕду(Еда еда) {
         boolean данныеВведённыеВерно = false;
         while (данныеВведённыеВерно == false) {
-            System.out.println("Сколько пельмешек?");
+            System.out.println("Сколько?");
             String строка = клавиатура.nextLine();
             try {
-                int количествоПельмешек = Integer.parseInt(строка);
-                скушатьПельмешки(количествоПельмешек);
+                int количество = Integer.parseInt(строка);
+                скушатьЕду(еда, количество);
                 данныеВведённыеВерно = true;
             } catch (Exception e) {
                 System.out.println("Ошибка парсинга, :c");
@@ -156,10 +147,12 @@ public class Main {
 
     }
 
-    void скушатьПельмешки(int количествоПельмешек) {
-        пользователь.ОбщийЗароботок=пользователь.ОбщийЗароботок - 5 * количествоПельмешек;
-        пользователь.hapiness=пользователь.hapiness + 5 * количествоПельмешек;
+    void скушатьЕду(Еда еда, int количество) {
+        пользователь.ОбщийЗароботок -= еда.дайОбщуюСтоимость(количество) ;
+        пользователь.hapiness += еда.дайОбщийЖирок(количество);
     }
+
+
 
     int финальныеОчки(){
         int очки = пользователь.ОбщийЗароботок * 2 + пользователь.hapiness * 3;
